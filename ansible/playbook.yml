@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  gather_facts: yes
+
+  roles:
+      - { role: kurron.time }
+      - { role: kurron.transparent-huge-pages }
+      - { role: kurron.block-device, bd_block_device: /dev/xvdf, bd_mount_point: /var/lib/mongo, bd_label: MONGODB }
+      - { role: kurron.mongodb, mongodb_version: 3.2 }
+
+  post_tasks:
+      - name: Print partition information
+        command: /usr/sbin/parted /dev/xvdf print
+        become: yes

@@ -1,0 +1,69 @@
+{
+    "description": "Builds a RHEL 7 (maipo) server x64 AMI with MongoDB pre-installed",
+    "min_packer_version": "0.11.0",
+
+    "variables": {
+        "region": "us-west-2",
+        "source_ami": "ami-6f68cf0f",
+        "ssh_username": "ec2-user",
+        "instance_type": "t2.micro",
+        "subnet_id": "subnet-0ebf9e6b",
+        "vpc_id": "vpc-fe24779b"
+    },
+
+    "builders": [{
+        "type": "amazon-ebs",
+        "ami_name": "mongodb-{{timestamp}}",
+        "ami_description": "AMI with MongoDB pre-installed",
+        "associate_public_ip_address": true,
+        "instance_type": "{{ user `instance_type` }}",
+        "region": "{{ user `region` }}",
+        "source_ami": "{{ user `source_ami` }}",
+        "ssh_port": 22,
+        "ssh_username": "{{ user `ssh_username` }}",
+        "ssh_timeout": "5m",
+        "subnet_id": "{{ user `subnet_id` }}",
+        "vpc_id": "{{ user `vpc_id` }}",
+        "tags": {
+          "Name": "Charlie",
+          "Purpose": "MongoDB",
+          "Project": "TLO SA",
+          "Creator": "Packer",
+          "Environment": "all",
+          "Freetext": "RHEL Maipo"
+        },
+        "ami_block_device_mappings": [
+            {
+                "device_name": "/dev/xvdf",
+                "delete_on_termination": false,
+                "encrypted": false,
+                "volume_size": 16,
+                "volume_type": "gp2"
+            }
+        ],
+        "launch_block_device_mappings": [
+            {
+                "device_name": "/dev/xvdf",
+                "delete_on_termination": false,
+                "encrypted": false,
+                "volume_size": 16,
+                "volume_type": "gp2"
+            }
+        ]
+    }],
+    "provisioners": [
+        {
+            "type": "shell",
+            "scripts": ["ansible/files/install-ansible.sh"]
+        },
+        {
+            "extra_arguments" : ["--verbose"],
+            "galaxy_file"     : "ansible/files/requirements.yml",
+            "playbook_dir"    : "ansible",
+            "playbook_file"   : "ansible/playbook.yml",
+            "type"            : "ansible-local"
+        }
+    ],
+    "post-processors": [
+    ]
+}
