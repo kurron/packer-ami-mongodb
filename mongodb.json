@@ -1,15 +1,6 @@
 {
     "description": "Builds a RHEL 7 (maipo) server x64 AMI with MongoDB pre-installed",
-    "min_packer_version": "0.11.0",
-
-    "variables": {
-        "region": "us-west-2",
-        "source_ami": "ami-6f68cf0f",
-        "ssh_username": "ec2-user",
-        "instance_type": "t2.micro",
-        "subnet_id": "subnet-0ebf9e6b",
-        "vpc_id": "vpc-fe24779b"
-    },
+    "min_packer_version": "0.12.2",
 
     "builders": [{
         "type": "amazon-ebs",
@@ -25,12 +16,12 @@
         "subnet_id": "{{ user `subnet_id` }}",
         "vpc_id": "{{ user `vpc_id` }}",
         "tags": {
-          "Name": "Charlie",
-          "Purpose": "MongoDB",
-          "Project": "TLO SA",
-          "Creator": "Packer",
-          "Environment": "all",
-          "Freetext": "RHEL Maipo"
+          "Name": "{{ user `name` }}",
+          "Purpose": "{{ user `purpose` }}",
+          "Project": "{{ user `project` }}",
+          "Creator": "{{ user `creator` }}",
+          "Environment": "{{ user `environment` }}",
+          "Freetext": "{{ user `notes` }}"
         },
         "ami_block_device_mappings": [
             {

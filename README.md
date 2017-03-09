@@ -1,5 +1,6 @@
 # Overview
-The Charlie box is responsible for hosting the MongoDB instance.
+This project creates an [Amazon Machine Image](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html) with
+MongoDB pre-installed and ready to be joined to a replica set.
 
 # Prerequisites
 * a working [Packer](https://www.packer.io/) installation
@@ -16,6 +17,8 @@ Testing was done under Ubuntu 16.04 Linux.
 
 Typing `./build.sh` will run Packer and build out an AMI image which can be used in
 [CloudFormation](https://aws.amazon.com/cloudformation/) templates.
+
+Configurable values are located in `variables.json`.  You may edit these as need to customize the template.
 
 # Installation
 

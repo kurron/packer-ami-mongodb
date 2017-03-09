@@ -2,3 +2,4 @@
 - src: kurron.mongodb
 - src: kurron.time
 - src: kurron.transparent-huge-pages
+- src: kurron.os-limits
